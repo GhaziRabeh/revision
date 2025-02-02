@@ -1,116 +1,87 @@
-<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-  
-    <!-- Salle -->
-    <div>
-      <label for="salle">Nom de salle:</label>
-      <input id="salle" formControlName="salle" type="text" />
-      <div *ngIf="userForm.controls['salle'].errors?.['required'] && userForm.controls['salle'].touched" style="color: red;">
-        Ce champ est requis.
-      </div>
-    </div>
-  
-    <!-- Date Reservation -->
-    <div>
-      <label for="dateReservation">Date de réservation:</label>
-      <input id="dateReservation" formControlName="dateReservation" type="date" />
-      <div *ngIf="userForm.controls['dateReservation'].errors?.['required'] && userForm.controls['dateReservation'].touched" style="color: red;">
-        Ce champ est requis.
-      </div>
-      <div *ngIf="userForm.controls['dateReservation'].errors?.['notFutureDate'] && userForm.controls['dateReservation'].touched" style="color: red;">
-        La date doit être une date future.
-      </div>
-      <div *ngIf="userForm.controls['dateReservation'].errors?.['invalidDate'] && userForm.controls['dateReservation'].touched" style="color: red;">
-        Veuillez entrer une date valide.
-      </div>
-    </div>
-  
-    <!-- Heure de début -->
-    <div>
-      <label for="heurDebut">Heure de début:</label>
-      <input id="heurDebut" formControlName="heurDebut" type="text" />
-      <div *ngIf="userForm.controls['heurDebut'].errors?.['required'] && userForm.controls['heurDebut'].touched" style="color: red;">
-        Ce champ est requis.
-      </div>
-    </div>
-  
-    <!-- Durée -->
-    <div>
-      <label for="duree">Durée:</label>
-      <input id="duree" formControlName="duree" type="text" />
-      <div *ngIf="userForm.controls['duree'].errors?.['required'] && userForm.controls['duree'].touched" style="color: red;">
-        Ce champ est requis.
-      </div>
-      <div *ngIf="userForm.controls['duree'].errors?.['pattern'] && userForm.controls['duree'].touched" style="color: red;">
-        Veuillez entrer une durée valide (ex: 14:30).
-      </div>
-    </div>
-  
-    <!-- Participants -->
-    <div>
-      <label for="participant">Participants:</label>
-      <input id="participant" formControlName="participant" type="text" />
-      <div *ngIf="userForm.controls['participant'].errors?.['required'] && userForm.controls['participant'].touched" style="color: red;">
-        Ce champ est requis.
-      </div>
-      <div *ngIf="userForm.controls['participant'].errors?.['pattern'] && userForm.controls['participant'].touched" style="color: red;">
-        Veuillez entrer un nombre valide.
-      </div>
-      <div *ngIf="userForm.controls['participant'].errors?.['max'] && userForm.controls['participant'].touched" style="color: red;">
-        La valeur ne doit pas dépasser 50.
-      </div>
-    </div>
-  
-    <!-- Equipments -->
-    <div>
-        <label for="equipdispo">Équipements Disponibles:</label>
-        <div>
-          <input
-            type="checkbox"
-            id="projecteur"
-            [(ngModel)]="selectedEquipment['Projecteur']"
-            (ngModelChange)="toggleEquipment('Projecteur', $event)"
-          />
-          <label for="projecteur">Projecteur</label>
-        </div>
-        <div>
-          <input
-            type="checkbox"
-            id="tableauBlanc"
-            [(ngModel)]="selectedEquipment['Tableau Blanc']"
-            (ngModelChange)="toggleEquipment('Tableau Blanc', $event)"
-          />
-          <label for="tableauBlanc">Tableau Blanc</label>
-        </div>
-        <div>
-          <input
-            type="checkbox"
-            id="connexionInternet"
-            [(ngModel)]="selectedEquipment['Connexion Internet']"
-            (ngModelChange)="toggleEquipment('Connexion Internet', $event)"
-          />
-          <label for="connexionInternet">Connexion Internet</label>
-        </div>
-        <div>
-          <input
-            type="checkbox"
-            id="microphone"
-            [(ngModel)]="selectedEquipment['Microphone']"
-            (ngModelChange)="toggleEquipment('Microphone', $event)"
-          />
-          <label for="microphone">Microphone</label>
-        </div>
-      </div>
-  
-  
 
-  
-    <button type="submit" [disabled]="userForm.invalid">Submit</button>
-  </form>
-  
-  
+
+
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+
+  <!-- Salle -->
   <div>
-    <h3>Équipements sélectionnés:</h3>
-    <ul>
-      <li *ngFor="let equip of getSelectedEquipments()">{{ equip }}</li>
-    </ul>
+    <label for="salle">Nom de salle:</label>
+    <input id="salle" formControlName="salle" type="text" />
+    <div *ngIf="userForm.controls['salle'].errors?.['required'] && userForm.controls['salle'].touched" style="color: red;">
+      Ce champ est requis.
+    </div>
   </div>
+
+  <!-- Date Reservation -->
+  <div>
+    <label for="dateReservation">Date de réservation:</label>
+    <input id="dateReservation" formControlName="dateReservation" type="date" />
+    <div *ngIf="userForm.controls['dateReservation'].errors?.['required'] && userForm.controls['dateReservation'].touched" style="color: red;">
+      Ce champ est requis.
+    </div>
+    <div *ngIf="userForm.controls['dateReservation'].errors?.['notFutureDate'] && userForm.controls['dateReservation'].touched" style="color: red;">
+      La date doit être une date future.
+    </div>
+    <div *ngIf="userForm.controls['dateReservation'].errors?.['invalidDate'] && userForm.controls['dateReservation'].touched" style="color: red;">
+      Veuillez entrer une date valide.
+    </div>
+  </div>
+
+  <!-- Heure de début -->
+  <div>
+    <label for="heurDebut">Heure de début:</label>
+    <input id="heurDebut" formControlName="heurDebut" type="text" />
+    <div *ngIf="userForm.controls['heurDebut'].errors?.['required'] && userForm.controls['heurDebut'].touched" style="color: red;">
+      Ce champ est requis.
+    </div>
+  </div>
+
+  <!-- Durée -->
+  <div>
+    <label for="duree">Durée:</label>
+    <input id="duree" formControlName="duree" type="text" />
+    <div *ngIf="userForm.controls['duree'].errors?.['required'] && userForm.controls['duree'].touched" style="color: red;">
+      Ce champ est requis.
+    </div>
+    <div *ngIf="userForm.controls['duree'].errors?.['pattern'] && userForm.controls['duree'].touched" style="color: red;">
+      Veuillez entrer une durée valide (ex: 14:30).
+    </div>
+  </div>
+
+  <!-- Participants -->
+  <div>
+    <label for="participant">Participants:</label>
+    <input id="participant" formControlName="participant" type="text" />
+    <div *ngIf="userForm.controls['participant'].errors?.['required'] && userForm.controls['participant'].touched" style="color: red;">
+      Ce champ est requis.
+    </div>
+    <div *ngIf="userForm.controls['participant'].errors?.['pattern'] && userForm.controls['participant'].touched" style="color: red;">
+      Veuillez entrer un nombre valide.
+    </div>
+    <div *ngIf="userForm.controls['participant'].errors?.['max'] && userForm.controls['participant'].touched" style="color: red;">
+      La valeur ne doit pas dépasser 50.
+    </div>
+  </div>
+
+  <!-- Equipments -->
+  <div formArrayName="equipments">
+    <label for="equipdispo">Équipements Disponibles:</label>
+    <div *ngFor="let equip of equipmentKeys; let i = index">
+      <input
+        type="checkbox"
+        [formControlName]="i"
+      />
+      <label>{{ equip }}</label>
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="userForm.invalid">Submit</button>
+</form>
+
+<!--Liste d'equipments-->
+<div>
+  <h3>Équipements sélectionnés:</h3>
+  <ul>
+    <li *ngFor="let equip of getSelectedEquipments()">{{ equip }}</li>
+  </ul>
+</div>

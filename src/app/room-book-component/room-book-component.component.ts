@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-room-book-component',
@@ -15,6 +15,7 @@ export class RoomBookComponentComponent {
     'Connexion Internet': false,
     'Microphone': false,
   };
+  equipmentKeys = Object.keys(this.selectedEquipment);
 
   constructor(private fb: FormBuilder) {
     this.userForm = this.fb.group({
@@ -22,32 +23,28 @@ export class RoomBookComponentComponent {
       dateReservation: ['', [Validators.required, this.futureDateValidator]],
       heurDebut: ['', [Validators.required]],
       duree: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
-      participant: [
-        '',
-        [Validators.required, Validators.pattern('^[0-9]*$'), Validators.max(50)],
-      ],
+      participant: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.max(50)]],
+      equipments: this.fb.array(this.equipmentKeys.map(() => this.fb.control(false))),
     });
   }
 
-  toggleEquipment(equipment: string, isChecked: boolean): void {
-    this.selectedEquipment[equipment] = isChecked;
+  get equipments() {
+    return (this.userForm.get('equipments') as FormArray);
   }
 
   getSelectedEquipments(): string[] {
-    return Object.keys(this.selectedEquipment).filter(
-      (equip) => this.selectedEquipment[equip]
-    );
+    return this.equipmentKeys.filter((equip, i) => this.equipments.at(i).value);
   }
 
   futureDateValidator(control: any): { [key: string]: boolean } | null {
     const value = control.value;
     const currentDate = new Date();
     const selectedDate = new Date(value);
-    
+
     currentDate.setHours(0, 0, 0, 0);
 
     if (!value || isNaN(selectedDate.getTime())) {
-      return { invalidDate: true }; 
+      return { invalidDate: true };
     }
     return selectedDate > currentDate ? null : { notFutureDate: true };
   }
@@ -55,7 +52,7 @@ export class RoomBookComponentComponent {
   onSubmit() {
     if (this.userForm.valid) {
       console.log('Form Submitted:', this.userForm.value);
-      console.log('Selected Equipment:', this.selectedEquipment);
+      console.log('Selected Equipment:', this.getSelectedEquipments());
     } else {
       console.log('Form Invalid:', this.userForm.errors);
     }
